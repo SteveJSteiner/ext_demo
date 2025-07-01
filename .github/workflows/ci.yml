@@ -1,0 +1,96 @@
+name: CI
+
+on: 
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    env:
+      XDG_RUNTIME_DIR: /tmp/runtime-dir
+      DISPLAY: :99.0
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Setup X11 for Linux
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+        mkdir -p /tmp/runtime-dir
+        chmod 700 /tmp/runtime-dir
+        /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Lint
+      run: npm run lint
+    
+    - name: Test
+      run: npm test
+    
+    - name: Bundle Desktop
+      run: npm run bundle:desktop
+    
+    - name: Bundle Web
+      run: npm run bundle:web
+    
+    - name: Package Extension
+      run: npm run package
+    
+    - name: Upload VSIX
+      uses: actions/upload-artifact@v4
+      with:
+        name: extension-${{ matrix.node-version }}
+        path: '*.vsix'
+
+  # Uncomment and configure when ready to publish
+  # publish:
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   
+  #   - name: Use Node.js
+  #     uses: actions/setup-node@v4
+  #     with:
+  #       node-version: '20.x'
+  #       cache: 'npm'
+  #   
+  #   - name: Install dependencies
+  #     run: npm ci
+  #   
+  #   - name: Build bundles
+  #     run: |
+  #       npm run bundle:desktop
+  #       npm run bundle:web
+  #   
+  #   # Option 1: Using HaaLeo/publish-vscode-extension (more reliable)
+  #   - name: Publish to VS Code Marketplace
+  #     if: contains(github.event.head_commit.message, 'feat:') || contains(github.event.head_commit.message, 'fix:')
+  #     uses: HaaLeo/publish-vscode-extension@v1
+  #     with:
+  #       pat: ${{ secrets.VSCE_TOKEN }}
+  #       registryUrl: https://marketplace.visualstudio.com
+  #   
+  #   # Option 2: Manual vsce command
+  #   # - name: Publish to VS Code Marketplace  
+  #   #   if: contains(github.event.head_commit.message, 'feat:') || contains(github.event.head_commit.message, 'fix:')
+  #   #   run: npx vsce publish -p ${{ secrets.VSCE_TOKEN }}

@@ -1,0 +1,70 @@
+{
+  "name": "my-lang-extension",
+  "displayName": "My Language Extension",
+  "description": "A VS Code extension with Language Server Protocol support",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./dist/extension.js",
+  "browser": "./dist/web/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "mylang",
+        "aliases": [
+          "MyLang",
+          "mylang"
+        ],
+        "extensions": [
+          ".mylang"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mylang",
+        "scopeName": "source.mylang",
+        "path": "./syntaxes/mylang.tmGrammar.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle:desktop && npm run bundle:web",
+    "bundle:desktop": "esbuild src/main.node.ts --bundle --platform=node --outfile=dist/extension.js --external:vscode --format=cjs --minify",
+    "bundle:web": "esbuild src/main.web.ts --bundle --platform=browser --format=esm --outfile=dist/web/extension.js --external:vscode --minify",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run test:unit && npm run test:desktop && npm run test:web",
+    "test:unit": "vitest",
+    "test:desktop": "vscode-test",
+    "test:web": "vscode-test-web",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package",
+    "pretest": "npm run compile && npm run lint"
+  },
+  "devDependencies": {
+    "@types/node": "18.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.3.4",
+    "@vscode/test-web": "^0.0.71",
+    "@vscode/vsce": "^2.15.0",
+    "esbuild": "^0.25.5",
+    "eslint": "^8.47.0",
+    "typescript": "^5.1.6",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.11"
+  }
+}

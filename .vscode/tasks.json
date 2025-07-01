@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "compile",
+      "group": "build",
+      "presentation": {
+        "panel": "shared"
+      },
+      "problemMatcher": "$tsc"
+    },
+    {
+      "type": "npm",
+      "script": "bundle:desktop",
+      "group": "build",
+      "presentation": {
+        "panel": "shared"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "bundle:web",
+      "group": "build",
+      "presentation": {
+        "panel": "shared"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "watch",
+      "isBackground": true,
+      "group": "build",
+      "presentation": {
+        "panel": "shared"
+      },
+      "problemMatcher": "$tsc-watch"
+    }
+  ]
+}
