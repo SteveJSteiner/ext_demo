@@ -1,5 +1,7 @@
 # My Language Extension
 
+![CI](https://github.com/SteveJSteiner/ext_demo/actions/workflows/ci.yml/badge.svg)
+
 > **Note**: This is a quick experimental VS Code extension project generated with [Claude Code](https://claude.ai/code) to learn modern extension development patterns and best practices.
 
 A VS Code extension providing Language Server Protocol support for MyLang, built with dual desktop/web compatibility.
