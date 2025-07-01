@@ -4,6 +4,15 @@
   "description": "A VS Code extension with Language Server Protocol support",
   "version": "0.0.1",
   "publisher": "stevejs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SteveJSteiner/ext_demo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SteveJSteiner/ext_demo/issues"
+  },
+  "homepage": "https://github.com/SteveJSteiner/ext_demo#readme",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.74.0"
   },
