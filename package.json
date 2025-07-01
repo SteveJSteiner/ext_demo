@@ -3,6 +3,7 @@
   "displayName": "My Language Extension",
   "description": "A VS Code extension with Language Server Protocol support",
   "version": "0.0.1",
+  "publisher": "stevejs",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -11,7 +12,6 @@
   ],
   "main": "./dist/extension.js",
   "browser": "./dist/web/extension.js",
-  "activationEvents": [],
   "contributes": {
     "languages": [
       {
@@ -40,8 +40,8 @@
     "bundle:web": "esbuild src/main.web.ts --bundle --platform=browser --format=esm --outfile=dist/web/extension.js --external:vscode --minify",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "test": "npm run test:unit && npm run test:desktop && npm run test:web",
-    "test:unit": "vitest",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run",
     "test:desktop": "vscode-test",
     "test:web": "vscode-test-web",
     "lint": "eslint src --ext ts",

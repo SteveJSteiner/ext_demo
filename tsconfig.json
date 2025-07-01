@@ -9,8 +9,9 @@
     "strict": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "declaration": true,
-    "declarationMap": true
+    "declaration": false,
+    "declarationMap": false
   },
-  "exclude": ["node_modules", ".vscode-test"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", ".vscode-test", "out", "dist"]
 }
